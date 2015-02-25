@@ -34,6 +34,7 @@ module Avocado
         puts 'avocado us              - show some information about you and your partner'
         puts 'avocado hug             - hug your partner'
         puts 'avocado say <something> - say <something> to your partner'
+        puts 'avocado messages        - show messages (since last checked)'
       end
     end
 
