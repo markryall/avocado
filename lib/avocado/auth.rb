@@ -29,6 +29,15 @@ class Avocado::Auth
     @signature ||= update_signature
   end
 
+  def get url
+    with_connection do |connection|
+      response = connection.get url, signed_headers
+      response.body if response.code == '200'
+    end
+  end
+
+  private
+
   def signed_headers
     {
       'Cookie' => "#{AVOCADO_COOKIE_NAME}=#{cookie}",
@@ -37,20 +46,18 @@ class Avocado::Auth
     }
   end
 
-  private
-
-  def get_cookie_from_login
+  def with_connection
     connection = Net::HTTP::new(Avocado.host, Avocado.port)
     connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
     connection.use_ssl = true
+    yield connection
+  end
 
-    params = "email=#{CGI.escape config[:email]}&password=#{CGI.escape config[:password]}"
-    response, data = connection.post AVOCADO_API_URL_LOGIN, params, {}
-
-    if response.code != "200"
-      nil
-    else
-      get_cookie_from_response response, AVOCADO_COOKIE_NAME
+  def get_cookie_from_login
+    with_connection do |connection|
+      params = "email=#{CGI.escape config[:email]}&password=#{CGI.escape config[:password]}"
+      response, data = connection.post AVOCADO_API_URL_LOGIN, params, {}
+      get_cookie_from_response response, AVOCADO_COOKIE_NAME if response.code == '200'
     end
   end
 
