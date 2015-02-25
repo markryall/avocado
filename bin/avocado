@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.dirname(__FILE__)+'/../lib'
+
+require 'avocado/auth'
+
+auth = Avocado::Auth(*ARGV)
+puts auth.cookie
+puts auth.signature
