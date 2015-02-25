@@ -7,6 +7,6 @@ require 'avocado/client'
 require 'avocado/api'
 
 config = Avocado::Config.new
-auth = Avocado::Client(config)
+client = Avocado::Client(config)
 api = Avocado::API(client)
 puts api.couple
