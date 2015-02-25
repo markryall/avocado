@@ -12,6 +12,15 @@ module Avocado
         puts "You are #{me['firstName']} and your partner is #{you['firstName']}"
       when 'say'
         api.say ARGV.join(' ')
+      when 'messages'
+        me, you = api.users
+        users = {
+          me['id'] => me['firstName'],
+          you['id'] => you['firstName'],
+        }
+        api.activities.each do |event|
+          puts "#{users[event['userId']]}: #{event['data']['text']}" if event['type'] == 'message'
+        end
       when 'hug'
         api.hug
       else

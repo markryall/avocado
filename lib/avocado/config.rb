@@ -10,7 +10,7 @@ class Avocado::Config
   def [] key
     unless @preferences[key]
       print "#{key}: "
-      self[key] = gets.chomp
+      self[key] = $stdin.gets.chomp
     end
     @preferences[key]
   end
