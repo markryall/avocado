@@ -3,10 +3,10 @@
 $:.unshift File.dirname(__FILE__)+'/../lib'
 
 require 'avocado/config'
-require 'avocado/auth'
+require 'avocado/client'
 require 'avocado/api'
 
 config = Avocado::Config.new
-auth = Avocado::Auth(config)
-api = Avocado::API(auth)
+auth = Avocado::Client(config)
+api = Avocado::API(client)
 puts api.couple
