@@ -15,6 +15,10 @@ class Avocado::Config
     @preferences[key]
   end
 
+  def peek key
+    @preferences[key]
+  end
+
   def []= key, value
     @preferences[key] = value
     persist

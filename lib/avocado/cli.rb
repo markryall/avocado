@@ -18,14 +18,17 @@ module Avocado
           me['id'] => me['firstName'],
           you['id'] => you['firstName'],
         }
-        api.activities.each do |event|
+        last = config.peek(:lastActivity)
+        api.activities(last).each do |event|
           if event['type'] == 'message'
             user = users[event['userId']]
             message = event['data']['text']
-            at = Time.at(event['timeCreated'].to_i/1000).strftime('%d/%m %H:%M:%S')
+            last = event['timeCreated'].to_i
+            at = Time.at(last/1000).strftime('%d/%m %H:%M:%S')
             puts "#{at} #{user}: #{message}"
           end
         end
+        config[:lastActivity] = last
       when 'hug'
         api.hug
       else

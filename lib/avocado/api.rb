@@ -25,8 +25,8 @@ class Avocado::API
     client.get '/api/couple'
   end
 
-  def activities
-    client.get '/api/activities'
+  def activities after=nil
+    client.get after ? "/api/activities?after=#{after}" : '/api/activities'
   end
 
   def say message
