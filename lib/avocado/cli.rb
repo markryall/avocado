@@ -11,7 +11,7 @@ module Avocado
         me, you = api.users
         puts "You are #{me['firstName']} and your partner is #{you['firstName']}"
       when 'say'
-        api.say ARGV.join(' ')
+        api.say args.join(' ')
       when 'messages'
         me, you = api.users
         users = {
