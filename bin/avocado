@@ -10,5 +10,15 @@ require 'pp'
 config = Avocado::Config.new
 client = Avocado::Client(config)
 api = Avocado::API(client)
-
-api.say ARGV.join(' ')
+command = ARGV.shift
+case command
+when 'say'
+  api.say ARGV.join(' ')
+when 'hug'
+  api.hug
+when 'help'
+  puts 'avocado hug'
+  puts 'avocado say <what you would like to say'
+else
+  puts "unknown command #{command}"
+end
