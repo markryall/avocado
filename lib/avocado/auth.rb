@@ -15,13 +15,12 @@ class Avocado::Auth
   AVOCADO_API_URL_LOGIN = '/api/authentication/login'
   AVOCADO_COOKIE_NAME = 'user_email'
 
-  attr_reader :email, :password, :dev_id, :dev_key
+  attr_reader :config, :dev_id, :dev_key
 
-  def initialize(email = nil, password = nil, dev_id = nil, dev_key = nil)
-    @email = email
-    @password = password
-    @dev_id = dev_id
-    @dev_key = dev_key
+  def initialize config
+    @config = config
+    @dev_id = config[:dev_id]
+    @dev_key = config[:dev_key]
   end
 
   def cookie
@@ -39,19 +38,17 @@ class Avocado::Auth
     connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
     connection.use_ssl = true
 
-    resp, data = connection.post(
-      AVOCADO_API_URL_LOGIN,
-      "email=" + CGI.escape(@email) + "&password=" + CGI.escape(@password),
-        {})
+    params = "email=#{CGI.escape config[:email]}&password=#{CGI.escape config[:password]}"
+    response, data = connection.post AVOCADO_API_URL_LOGIN, params, {}
 
-    if resp.code != "200"
+    if response.code != "200"
       nil
     else
-      get_cookie_from_response(resp, AVOCADO_COOKIE_NAME)
+      get_cookie_from_response response, AVOCADO_COOKIE_NAME
     end
   end
 
-  def get_cookie_from_response(resp, cookie_name)
+  def get_cookie_from_response resp, cookie_name
     all_cookies = resp.get_fields('Set-cookie')
     all_cookies.each { | cookie |
         cookie_string = cookie.split('; ')[0]
