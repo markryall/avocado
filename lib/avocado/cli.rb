@@ -8,12 +8,10 @@ module Avocado
       command = args.shift
       case command
       when 'us'
-        me, you = api.users
         puts "You are #{me['firstName']} and your partner is #{you['firstName']}"
       when 'say'
         api.say args.join(' ')
       when 'messages'
-        me, you = api.users
         users = {
           me['id'] => me['firstName'],
           you['id'] => you['firstName'],
@@ -37,6 +35,18 @@ module Avocado
         puts 'avocado hug             - hug your partner'
         puts 'avocado say <something> - say <something> to your partner'
       end
+    end
+
+    def self.me
+      users.first
+    end
+
+    def self.you
+      users.last
+    end
+
+    def self.users
+      @users ||= api.users
     end
 
     def self.api
