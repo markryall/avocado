@@ -36,4 +36,8 @@ class Avocado::API
   def hug
     client.post '/api/hug'
   end
+
+  def lists
+    client.get '/api/lists'
+  end
 end

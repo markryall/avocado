@@ -1,24 +1,4 @@
 #!/usr/bin/env ruby
-
 $:.unshift File.dirname(__FILE__)+'/../lib'
-
-require 'avocado/config'
-require 'avocado/client'
-require 'avocado/api'
-require 'pp'
-
-config = Avocado::Config.new
-client = Avocado::Client(config)
-api = Avocado::API(client)
-command = ARGV.shift
-case command
-when 'say'
-  api.say ARGV.join(' ')
-when 'hug'
-  api.hug
-when 'help'
-  puts 'avocado hug'
-  puts 'avocado say <what you would like to say'
-else
-  puts "unknown command #{command}"
-end
+require 'avocado/cli'
+Avocado::Cli.execute *ARGV
