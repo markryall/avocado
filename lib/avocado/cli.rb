@@ -16,8 +16,9 @@ module Avocado
         api.hug
       else
         puts "unknown command '#{command}'" if command
-        puts 'avocado hug'
-        puts 'avocado say <what you would like to say'
+        puts 'avocado us              - show some information about you and your partner'
+        puts 'avocado hug             - hug your partner'
+        puts 'avocado say <something> - say <something> to your partner'
       end
     end
 
