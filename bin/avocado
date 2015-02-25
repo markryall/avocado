@@ -5,8 +5,10 @@ $:.unshift File.dirname(__FILE__)+'/../lib'
 require 'avocado/config'
 require 'avocado/client'
 require 'avocado/api'
+require 'pp'
 
 config = Avocado::Config.new
 client = Avocado::Client(config)
 api = Avocado::API(client)
-puts api.couple
+
+api.say ARGV.join(' ')

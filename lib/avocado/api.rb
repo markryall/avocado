@@ -7,21 +7,33 @@ module Avocado
 end
 
 class Avocado::API
-  AVOCADO_API_URL_COUPLE = '/api/couple'
-
   attr_reader :client
 
   def initialize client
     @client = client
   end
 
-  def couple
-    @couple ||= update_couple
+  def users
+    client.get '/api/user'
   end
 
-  private
+  def user id
+    client.get "/api/user/#{id}"
+  end
 
-  def update_couple
-    client.get AVOCADO_API_URL_COUPLE
+  def couple
+    client.get '/api/couple'
+  end
+
+  def activities
+    client.get '/api/activities'
+  end
+
+  def say message
+    client.post '/api/conversation', message: message
+  end
+
+  def hug
+    client.post '/api/hug'
   end
 end

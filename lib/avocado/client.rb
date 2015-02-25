@@ -3,6 +3,7 @@ require 'cgi'
 require 'digest'
 require 'net/http'
 require 'net/https'
+require 'json'
 
 module Avocado
   def self.Client(*argv)
@@ -29,10 +30,16 @@ class Avocado::Client
     @signature ||= update_signature
   end
 
+  def post url, params={}
+    with_connection do |connection|
+      connection.post url, to_query_string(params), signed_headers
+    end
+  end
+
   def get url
     with_connection do |connection|
       response = connection.get url, signed_headers
-      response.body if response.code == '200'
+      JSON.parse(response.body) if response.code == '200'
     end
   end
 
@@ -53,9 +60,13 @@ class Avocado::Client
     yield connection
   end
 
+  def to_query_string hash
+    hash.map{|k,v| "#{CGI.escape k.to_s}=#{CGI.escape v.to_s}"}.join('&')
+  end
+
   def get_cookie_from_login
     with_connection do |connection|
-      params = "email=#{CGI.escape config[:email]}&password=#{CGI.escape config[:password]}"
+      params = to_query_string email: config[:email], password: config[:password]
       response, data = connection.post AVOCADO_API_URL_LOGIN, params, {}
       get_cookie_from_response response, AVOCADO_COOKIE_NAME if response.code == '200'
     end
