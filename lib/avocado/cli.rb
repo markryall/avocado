@@ -19,7 +19,12 @@ module Avocado
           you['id'] => you['firstName'],
         }
         api.activities.each do |event|
-          puts "#{users[event['userId']]}: #{event['data']['text']}" if event['type'] == 'message'
+          if event['type'] == 'message'
+            user = users[event['userId']]
+            message = event['data']['text']
+            at = Time.at(event['timeCreated'].to_i/1000).strftime('%d/%m %H:%M:%S')
+            puts "#{at} #{user}: #{message}"
+          end
         end
       when 'hug'
         api.hug
