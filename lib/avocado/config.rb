@@ -1,7 +1,5 @@
+require 'avocado'
 require 'yaml'
-
-module Avocado
-end
 
 class Avocado::Config
   def initialize

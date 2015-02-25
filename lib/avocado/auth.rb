@@ -1,3 +1,4 @@
+require 'avocado'
 require 'cgi'
 require 'digest'
 require 'net/http'
@@ -10,17 +11,14 @@ module Avocado
 end
 
 class Avocado::Auth
-  AVOCADO_API_HOST = 'avocado.io'
-  AVOCADO_API_PORT = 443
   AVOCADO_API_URL_LOGIN = '/api/authentication/login'
   AVOCADO_COOKIE_NAME = 'user_email'
+  AVOCADO_USER_AGENT = 'Avocado Test Api Client v.1.0'
 
   attr_reader :config, :dev_id, :dev_key
 
   def initialize config
     @config = config
-    @dev_id = config[:dev_id]
-    @dev_key = config[:dev_key]
   end
 
   def cookie
@@ -31,10 +29,18 @@ class Avocado::Auth
     @signature ||= update_signature
   end
 
+  def signed_headers
+    {
+      'Cookie' => "#{AVOCADO_COOKIE_NAME}=#{cookie}",
+      'X-AvoSig' => signature,
+      'User-Agent' => AVOCADO_USER_AGENT
+    }
+  end
+
   private
 
   def get_cookie_from_login
-    connection = Net::HTTP::new(AVOCADO_API_HOST, AVOCADO_API_PORT)
+    connection = Net::HTTP::new(Avocado.host, Avocado.port)
     connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
     connection.use_ssl = true
 
@@ -67,9 +73,9 @@ class Avocado::Auth
     end
 
     # Hash the user token.
-    hashed_user_token = Digest::SHA256.new << @cookie + @dev_key
+    hashed_user_token = Digest::SHA256.new << cookie + config[:dev_key]
 
     # Get their signature.
-    "#{@dev_id}:#{hashed_user_token}"
+    "#{config[:dev_id]}:#{hashed_user_token}"
   end
 end

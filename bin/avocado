@@ -4,7 +4,9 @@ $:.unshift File.dirname(__FILE__)+'/../lib'
 
 require 'avocado/config'
 require 'avocado/auth'
+require 'avocado/api'
 
-auth = Avocado::Auth(Avocado::Config.new)
-puts auth.cookie
-puts auth.signature
+config = Avocado::Config.new
+auth = Avocado::Auth(config)
+api = Avocado::API(auth)
+puts api.couple

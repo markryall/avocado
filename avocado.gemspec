@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'avocado/version'
+require 'avocado'
 
 Gem::Specification.new do |spec|
   spec.name          = "avocado"
-  spec.version       = Avocado::VERSION
+  spec.version       = Avocado.version
   spec.authors       = ["Mark Ryall"]
   spec.email         = ["mark@ryall.name"]
   spec.summary       = %q{TODO: Write a short summary. Required.}

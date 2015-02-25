@@ -1,5 +1,13 @@
-require "avocado/version"
-
 module Avocado
-  # Your code goes here...
+  def self.host
+    'avocado.io'
+  end
+
+  def self.port
+    443
+  end
+
+  def self.version
+    '0.0.1'
+  end
 end
