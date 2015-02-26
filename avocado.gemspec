@@ -8,8 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Avocado.version
   spec.authors       = ["Mark Ryall"]
   spec.email         = ["mark@ryall.name"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = 'ruby wrapper for avocado.io api'
   spec.homepage      = ""
   spec.license       = "MIT"
 
