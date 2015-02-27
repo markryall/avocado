@@ -8,22 +8,40 @@ class Avocado::Commands::Lists
   end
 
   def execute args
-    list_command = args.shift
-    case list_command
+    command = args.shift
+    case command
     when nil
       list
     when 'create'
       create args
+    when 'show'
+      show args
     end
   end
 
   def list
-    api.lists.each do |list|
-      puts "#{list['id']} #{list['name']} (#{list['items'].count} items)"
+    lists = []
+    api.lists.all.each_with_index do |list, index|
+      lists << list['id']
+      puts "#{index + 1}) #{list['name']} (#{list['items'].count} items)"
     end
+    config['lists'] = lists
   end
 
   def create
     api.lists.create args.join(' ')
+  end
+
+  def show args
+    id = config['lists'][args.first.to_i - 1]
+    items = []
+    list = api.lists.show(id)
+    puts list['name']
+    list['items'].each_with_index do |item, index|
+      items << item['id']
+      puts "#{index + 1}) [#{item['complete'] ? 'x' : ' '}] #{item['text']}"
+    end
+    config['list'] = id
+    config['items'] = items
   end
 end

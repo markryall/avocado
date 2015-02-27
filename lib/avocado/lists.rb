@@ -7,11 +7,15 @@ class Avocado::Lists
     @client = client
   end
 
-  def each
-    client.get('/api/lists').each { |list| yield list }
+  def all
+    client.get '/api/lists'
   end
 
   def create name
     client.post '/api/lists', name: name
+  end
+
+  def show id
+    client.get "/api/lists/#{id}"
   end
 end
