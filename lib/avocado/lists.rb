@@ -22,4 +22,8 @@ class Avocado::Lists
   def delete id
     client.post "/api/lists/#{id}/delete"
   end
+
+  def create_item id, text
+    client.post "/api/lists/#{id}", text: text
+  end
 end

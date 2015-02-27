@@ -14,7 +14,7 @@ class Avocado::Commands::ListItems
     when nil
       list id
     when 'create'
-      create
+      create id
     end
   end
 
@@ -28,5 +28,9 @@ class Avocado::Commands::ListItems
     end
     config['list'] = id
     config['items'] = items
+  end
+
+  def create id
+    api.lists.create_item id, args.join(' ')
   end
 end
