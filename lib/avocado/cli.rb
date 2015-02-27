@@ -29,12 +29,17 @@ module Avocado
         config[:lastActivity] = last
       when 'hug'
         api.hug
+      when 'lists'
+        api.lists.each do |list|
+          puts "#{list['name']} (#{list['items'].count} items)"
+        end
       else
         puts "unknown command '#{command}'" if command
         puts 'avocado us              - show some information about you and your partner'
         puts 'avocado hug             - hug your partner'
         puts 'avocado say <something> - say <something> to your partner'
         puts 'avocado messages        - show messages (since last checked)'
+        puts 'avocado lists           - show lists'
       end
     end
 
