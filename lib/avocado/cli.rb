@@ -1,64 +1,36 @@
 require 'avocado/config'
 require 'avocado/client'
 require 'avocado/api'
+require 'avocado/users'
+require 'avocado/commands/messages'
+require 'avocado/commands/lists'
 
 module Avocado
   module Cli
+    extend Avocado::Users
+
     def self.execute *args
       command = args.shift
       case command
       when 'us'
         puts "You are #{me['firstName']} and your partner is #{you['firstName']}"
       when 'say'
-        api.say args.join(' ')
+
       when 'messages'
-        users = {
-          me['id'] => me['firstName'],
-          you['id'] => you['firstName'],
-        }
-        last = config.peek(:lastActivity)
-        api.activities(last).each do |event|
-          if event['type'] == 'message'
-            user = users[event['userId']]
-            message = event['data']['text']
-            last = event['timeCreated'].to_i
-            at = Time.at(last/1000).strftime('%d/%m %H:%M:%S')
-            puts "#{at} #{user}: #{message}"
-          end
-        end
-        config[:lastActivity] = last
+        Avocado::Commands::Messages.new(api, config).execute args
       when 'hug'
         api.hug
       when 'lists'
-        list_command = args.shift
-        case list_command
-        when nil
-          api.lists.each do |list|
-            puts "#{list['name']} (#{list['items'].count} items)"
-          end
-        when 'new'
-          api.lists.create args.join(' ')
-        end
+        Avocado::Commands::Lists.new(api, config).execute args
       else
         puts "unknown command '#{command}'" if command
-        puts 'avocado us              - show some information about you and your partner'
-        puts 'avocado hug             - hug your partner'
-        puts 'avocado say <something> - say <something> to your partner'
-        puts 'avocado messages        - show messages (since last checked)'
-        puts 'avocado lists           - show lists'
+        puts 'avocado us                        - show some information about you and your partner'
+        puts 'avocado hug                       - hug your partner'
+        puts 'avocado messages                  - show messages (since last checked)'
+        puts 'avocado messages create <message> - say <message> to your partner'
+        puts 'avocado lists                     - show lists'
+        puts 'avocado lists create <name>       - create a list called <name>'
       end
-    end
-
-    def self.me
-      users.first
-    end
-
-    def self.you
-      users.last
-    end
-
-    def self.users
-      @users ||= api.users
     end
 
     def self.api
