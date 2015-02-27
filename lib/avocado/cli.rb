@@ -30,8 +30,14 @@ module Avocado
       when 'hug'
         api.hug
       when 'lists'
-        api.lists.each do |list|
-          puts "#{list['name']} (#{list['items'].count} items)"
+        list_command = args.shift
+        case list_command
+        when nil
+          api.lists.each do |list|
+            puts "#{list['name']} (#{list['items'].count} items)"
+          end
+        when 'new'
+          api.lists.create args.join(' ')
         end
       else
         puts "unknown command '#{command}'" if command

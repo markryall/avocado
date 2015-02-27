@@ -1,4 +1,4 @@
-require 'avocado'
+require 'avocado/lists'
 
 module Avocado
   def self.API(*args)
@@ -7,10 +7,11 @@ module Avocado
 end
 
 class Avocado::API
-  attr_reader :client
+  attr_reader :client, :lists
 
   def initialize client
     @client = client
+    @lists = Avocado::Lists.new client
   end
 
   def users
@@ -35,9 +36,5 @@ class Avocado::API
 
   def hug
     client.post '/api/hug'
-  end
-
-  def lists
-    client.get '/api/lists'
   end
 end
