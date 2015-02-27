@@ -1,21 +1,22 @@
 require 'avocado/commands'
+require 'avocado/commands/list_items'
 
 class Avocado::Commands::Lists
-  attr_reader :api, :config
+  attr_reader :api, :config, :args
 
-  def initialize api, config
-    @api, @config = api, config
+  def initialize api, config, args
+    @api, @config, @args = api, config, args
   end
 
-  def execute args
+  def execute
     command = args.shift
     case command
     when nil
       list
     when 'create'
-      create args
-    when 'show'
-      show args
+      create
+    when 'items'
+      Avocado::Commands::ListItems.new(api, config, args).execute
     end
   end
 
@@ -30,18 +31,5 @@ class Avocado::Commands::Lists
 
   def create
     api.lists.create args.join(' ')
-  end
-
-  def show args
-    id = config['lists'][args.first.to_i - 1]
-    items = []
-    list = api.lists.show(id)
-    puts list['name']
-    list['items'].each_with_index do |item, index|
-      items << item['id']
-      puts "#{index + 1}) [#{item['complete'] ? 'x' : ' '}] #{item['text']}"
-    end
-    config['list'] = id
-    config['items'] = items
   end
 end

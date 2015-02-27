@@ -2,19 +2,19 @@ require 'avocado/commands'
 
 class Avocado::Commands::Messages
   include Avocado::Users
-  attr_reader :api, :config
+  attr_reader :api, :config, :args
 
-  def initialize api, config
-    @api, @config = api, config
+  def initialize api, config, args
+    @api, @config, @args = api, config, args
   end
 
-  def execute args
+  def execute
     command = args.shift
     case command
     when nil
       list
     when 'create'
-      create args
+      create
     end
   end
 
@@ -36,7 +36,7 @@ class Avocado::Commands::Messages
     config[:lastActivity] = last
   end
 
-  def create args
+  def create
     api.say args.join(' ')
   end
 end

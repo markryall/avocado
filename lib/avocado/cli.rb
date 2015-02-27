@@ -14,14 +14,12 @@ module Avocado
       case command
       when 'us'
         puts "You are #{me['firstName']} and your partner is #{you['firstName']}"
-      when 'say'
-
       when 'messages'
-        Avocado::Commands::Messages.new(api, config).execute args
+        Avocado::Commands::Messages.new(api, config, args).execute
       when 'hug'
         api.hug
       when 'lists'
-        Avocado::Commands::Lists.new(api, config).execute args
+        Avocado::Commands::Lists.new(api, config, args).execute
       else
         puts "unknown command '#{command}'" if command
         puts 'avocado us                        - show some information about you and your partner'
