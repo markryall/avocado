@@ -19,6 +19,9 @@ class Avocado::Commands::Lists
     when 'delete'
       delete
       list
+    when 'show'
+      config['list'] = config['lists'][args.shift.to_i - 1]
+      Avocado::Commands::ListItems.new(api, config, args).list
     when 'items'
       Avocado::Commands::ListItems.new(api, config, args).execute
     end
