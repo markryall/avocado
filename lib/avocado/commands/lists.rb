@@ -15,8 +15,10 @@ class Avocado::Commands::Lists
       list
     when 'create'
       create
+      list
     when 'delete'
       delete
+      list
     when 'items'
       Avocado::Commands::ListItems.new(api, config, args).execute
     end

@@ -15,6 +15,7 @@ class Avocado::Commands::ListItems
       list id
     when 'create'
       create id
+      list id
     end
   end
 
