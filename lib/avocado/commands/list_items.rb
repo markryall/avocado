@@ -13,6 +13,8 @@ class Avocado::Commands::ListItems
     case command
     when nil
       list id
+    when 'create'
+      create
     end
   end
 

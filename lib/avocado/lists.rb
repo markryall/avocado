@@ -18,4 +18,8 @@ class Avocado::Lists
   def show id
     client.get "/api/lists/#{id}"
   end
+
+  def delete id
+    client.post "/api/lists/#{id}/delete"
+  end
 end

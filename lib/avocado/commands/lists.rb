@@ -15,6 +15,8 @@ class Avocado::Commands::Lists
       list
     when 'create'
       create
+    when 'delete'
+      delete
     when 'items'
       Avocado::Commands::ListItems.new(api, config, args).execute
     end
@@ -31,5 +33,10 @@ class Avocado::Commands::Lists
 
   def create
     api.lists.create args.join(' ')
+  end
+
+  def delete
+    id = config['lists'][args.shift.to_i - 1]
+    api.lists.delete(id)
   end
 end
