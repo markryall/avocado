@@ -22,12 +22,18 @@ module Avocado
         Avocado::Commands::Lists.new(api, config, args).execute
       else
         puts "unknown command '#{command}'" if command
-        puts 'avocado us                        - show some information about you and your partner'
-        puts 'avocado hug                       - hug your partner'
-        puts 'avocado messages                  - show messages (since last checked)'
-        puts 'avocado messages create <message> - say <message> to your partner'
-        puts 'avocado lists                     - show lists'
-        puts 'avocado lists create <name>       - create a list called <name>'
+        puts 'avocado us                             - show some information about you and your partner'
+        puts 'avocado hug                            - hug your partner'
+        puts 'avocado messages                       - show messages (since last checked)'
+        puts 'avocado messages create <message>      - say <message> to your partner'
+        puts 'avocado lists                          - show lists'
+        puts 'avocado lists create <name>            - create a list called <name>'
+        puts 'avocado lists show <index>             - show list at index <index> (this will select the list)'
+        puts 'avocado lists delete <index>           - delete list at index <index>'
+        puts 'avocado lists items create <item>      - create new item in selected list'
+        puts 'avocado lists items complete <index>   - complete item at index <index> in selected list'
+        puts 'avocado lists items uncomplete <index> - complete item at index <index> in selected list'
+        puts 'avocado lists items delete <index>     - delete item at index <index> in selected list'
       end
     end
 
