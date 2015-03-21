@@ -1,4 +1,11 @@
 module Avocado::Users
+  def users_hash
+    @users_hash ||= {
+      me['id'] => me['firstName'],
+      you['id'] => you['firstName'],
+    }
+  end
+
   def me
     users.first
   end

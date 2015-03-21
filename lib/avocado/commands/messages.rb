@@ -19,24 +19,30 @@ class Avocado::Commands::Messages
   end
 
   def list
-    users = {
-      me['id'] => me['firstName'],
-      you['id'] => you['firstName'],
-    }
     last = config.peek(:lastActivity)
-    api.activities(last).each do |event|
-      if event['type'] == 'message'
-        user = users[event['userId']]
-        message = event['data']['text']
-        last = event['timeCreated'].to_i
-        at = Time.at(last/1000).strftime('%d/%m %H:%M:%S')
-        puts "#{at} #{user}: #{message}"
-      end
+    messages = api.activities(last).find_all {|a| a['type'] == 'message' }
+    if messages.empty?
+      puts last ? "No messages since #{time last}" : "No messages"
+    else
+      messages.each { |m| show_message m }
+      last = messages.last['timeCreated']
     end
     config[:lastActivity] = last
   end
 
   def create
     api.say args.join(' ')
+  end
+
+  private
+
+  def show_message message
+    user = users_hash[message['userId']]
+    text = message['data']['text']
+    puts "#{time message['timeCreated']} #{user}: #{text}"
+  end
+
+  def time ms
+    Time.at(ms.to_i/1000).strftime('%d/%m %H:%M:%S')
   end
 end
