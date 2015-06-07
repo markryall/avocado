@@ -31,9 +31,11 @@ class Avocado::Client
   end
 
   def post url, params={}
-    with_connection do |connection|
+    puts "posting #{to_query_string(params)} to #{url}"
+    response = with_connection do |connection|
       connection.post url, to_query_string(params), signed_headers
     end
+    response.tap {|r| puts r.body}
   end
 
   def get url

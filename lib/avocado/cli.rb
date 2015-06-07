@@ -4,6 +4,7 @@ require 'avocado/api'
 require 'avocado/users'
 require 'avocado/commands/messages'
 require 'avocado/commands/lists'
+require 'avocado/commands/events'
 
 module Avocado
   module Cli
@@ -20,6 +21,8 @@ module Avocado
         api.hug
       when 'lists'
         Avocado::Commands::Lists.new(api, config, args).execute
+      when 'events'
+        Avocado::Commands::Events.new(api, config, args).execute
       else
         puts "unknown command '#{command}'" if command
         puts 'avocado us                             - show some information about you and your partner'
@@ -34,6 +37,7 @@ module Avocado
         puts 'avocado lists items complete <index>   - complete item at index <index> in selected list'
         puts 'avocado lists items uncomplete <index> - complete item at index <index> in selected list'
         puts 'avocado lists items delete <index>     - delete item at index <index> in selected list'
+        puts 'avocado events                         - show events'
       end
     end
 

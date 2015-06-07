@@ -1,4 +1,5 @@
 require 'avocado/lists'
+require 'avocado/events'
 
 module Avocado
   def self.API(*args)
@@ -7,11 +8,12 @@ module Avocado
 end
 
 class Avocado::API
-  attr_reader :client, :lists
+  attr_reader :client, :lists, :events
 
   def initialize client
     @client = client
     @lists = Avocado::Lists.new client
+    @events = Avocado::Events.new client
   end
 
   def users
