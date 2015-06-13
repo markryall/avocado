@@ -30,7 +30,7 @@ class Avocado::Commands::Events
     if builder.errors
       builder.errors.each {|e| puts e}
     else
-      api.events.create builder.event
+      api.events.create builder.event.params
     end
   end
 end
