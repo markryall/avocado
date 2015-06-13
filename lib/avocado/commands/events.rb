@@ -14,7 +14,7 @@ class Avocado::Commands::Events
     when nil
       list
     when 'create'
-      create
+      create *args
       list
     end
   end
@@ -26,11 +26,12 @@ class Avocado::Commands::Events
   end
 
   def create *args
-    builder = Avocado::EventBuilder.new(*args)
-    if builder.errors
-      builder.errors.each {|e| puts e}
+    builder = Avocado::EventBuilder.new
+    event = builder.build args.join(' ')
+    if event
+      api.events.create event.params
     else
-      api.events.create builder.event.params
+      builder.errors.each {|e| puts e}
     end
   end
 end
