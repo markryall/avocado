@@ -22,24 +22,31 @@ end
 Fixnum.include Times
 
 describe Avocado::EventBuilder do
-  SUNDAY_6PM    = Time.utc(2015, 06, 07, 18)
-  THURSDAY_12PM = Time.utc(2015, 06, 11, 12)
-  THURSDAY_1PM  = Time.utc(2015, 06, 11, 13)
-  THURSDAY_3PM  = Time.utc(2015, 06, 11, 15)
+  SUNDAY_6PM     = Time.new(2015, 06, 07, 18)
+  SUNDAY_6_05_PM = Time.new(2015, 06, 07, 18, 5)
+  SUNDAY_7PM     = Time.new(2015, 06, 07, 19)
+  THURSDAY_12PM  = Time.new(2015, 06, 11, 12)
+  THURSDAY_1PM   = Time.new(2015, 06, 11, 13)
+  THURSDAY_3PM   = Time.new(2015, 06, 11, 15)
 
-  let(:builder) { Avocado::EventBuilder.new SUNDAY_6PM.to_i, 'UTC' }
+  let(:builder) { Avocado::EventBuilder.new SUNDAY_6PM }
 
   [
-    ['call mum at 7',                              'call mum', THURSDAY_12PM, THURSDAY_1PM],
-     ['call mum at 7pm',                            'call mum', THURSDAY_12PM, THURSDAY_1PM],
-     ['go to gym for 1 hour at 7pm',                'go to gym', THURSDAY_12PM, THURSDAY_1PM],
-     ['go swimming for 1 hour on Thursday at 12pm', 'go swimming', THURSDAY_12PM, THURSDAY_1PM],
-     ['go to gym for 3 hours on Thursday at 12pm',  'go to gym', THURSDAY_12PM, THURSDAY_3PM]
+    ['turn off stove in 5 minutes',                'turn off stove', SUNDAY_6_05_PM, SUNDAY_6_05_PM],
+    ['call mum in 1 hour',                         'call mum', SUNDAY_7PM, SUNDAY_7PM],
+    ['call mum at 19',                             'call mum', SUNDAY_7PM, SUNDAY_7PM],
+    ['call mum at 7pm',                            'call mum', SUNDAY_7PM, SUNDAY_7PM],
+    ['call mum at 7',                              'call mum', SUNDAY_7PM, SUNDAY_7PM],
+    ['go to gym for 1 hour at 7pm',                'go to gym', nil, nil],
+    ['go swimming for 1 hour on Thursday at 12pm', 'go swimming', nil, nil],
+    ['go to gym for 3 hours on Thursday at 12pm',  'go to gym', nil, nil]
   ].each do |args|
     description, title, start_time, end_time = *args
     it description do
       event = builder.build description
-      event.params[:title].must_equal title
+      event.title.must_equal title
+      event.start_time.must_equal start_time if start_time
+      event.end_time.must_equal end_time if end_time
     end
   end
 end

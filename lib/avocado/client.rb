@@ -31,17 +31,24 @@ class Avocado::Client
   end
 
   def post url, params={}
-    puts "posting #{to_query_string(params)} to #{url}"
     response = with_connection do |connection|
       connection.post url, to_query_string(params), signed_headers
     end
-    response.tap {|r| puts r.body}
+    if response.code.start_with? '2'
+      JSON.parse(response.body)
+    else
+      fail "received response #{response.code}: #{response.body}"
+    end
   end
 
   def get url
     with_connection do |connection|
       response = connection.get url, signed_headers
-      JSON.parse(response.body) if response.code == '200'
+      if response.code.start_with? '2'
+        JSON.parse response.body
+      else
+        fail "received response #{response.code}: #{response.body}"
+      end
     end
   end
 

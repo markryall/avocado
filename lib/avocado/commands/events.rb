@@ -29,9 +29,9 @@ class Avocado::Commands::Events
     builder = Avocado::EventBuilder.new
     event = builder.build args.join(' ')
     if event
-      api.events.create event.params
+      response = api.events.create event.params
     else
-      builder.errors.each {|e| puts e}
+      builder.usage
     end
   end
 end

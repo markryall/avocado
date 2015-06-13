@@ -1,7 +1,7 @@
 require 'avocado/event'
 
 class Avocado::EventBuilder
-  attr_reader :errors
+  attr_reader :errors, :now
 
   SHORT_DAYNAMES = %w{su mo tu we th fr sa}
 
@@ -9,8 +9,14 @@ class Avocado::EventBuilder
     @now, @tz = now, tz
   end
 
+  def usage
+    puts "The event was not recognised.  Current patterns are:"
+    puts "  Call Mum in 15 minutes"
+    puts "  Turn off oven in 2 hours"
+    puts "  Medical appointment at 7"
+  end
+
   def build(text)
-    @errors = ["\"#{text}\" was not recognised"]
     match = /^(.+) for (\d+) (.+)s? on (.+) at (\d+)([ap])m?$/.match text
     return event(match[1], 1, 1) if match
     match = /^(.+) for (\d+) (.+)s? at (\d+)([ap])m?$/.match text
@@ -18,14 +24,26 @@ class Avocado::EventBuilder
     match = /^(.+) in (\d+) ([m|h])\w*$/.match text
     return relative_from_now match if match
     match = /^(.+) at (\d+)([ap])?m?$/.match text
-    return event(match[1], increment(match[2], match[3]), 1) if match
+    return specific_time match if match
   end
 
   private
 
+  def specific_time match
+    _, title, hour, ap = *match
+    time = day hour.to_i
+    event(title, time, time)
+  end
+
+  def day hour
+    hour += 12 if now.hour >= hour
+    Time.new now.year, now.month, now.day, hour
+  end
+
   def relative_from_now match
-    future_time = @now + increment(match[2], match[3])
-    event(match[1], future_time, future_time)
+    _, title, quantity, unit = *match
+    future_time = @now + increment(quantity,unit)
+    event(title, future_time, future_time)
   end
 
   def increment quantity, unit
