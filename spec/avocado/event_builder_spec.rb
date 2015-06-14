@@ -30,13 +30,17 @@ describe Avocado::EventBuilder do
   MONDAY_1_0700   = Time.new(2015,  6,  8,  7)
   MONDAY_1_1800   = Time.new(2015,  6,  8, 18)
   THURSDAY_1_1200 = Time.new(2015,  6, 11, 12)
+  THURSDAY_1_1210 = Time.new(2015,  6, 11, 12, 10)
   THURSDAY_1_1300 = Time.new(2015,  6, 11, 13)
+  THURSDAY_1_1310 = Time.new(2015,  6, 11, 13, 10)
   THURSDAY_1_1500 = Time.new(2015,  6, 11, 15)
   THURSDAY_1_1900 = Time.new(2015,  6, 11, 19)
   SUNDAY_2_1900   = Time.new(2015,  6, 14, 19)
 
   JULY_15_2015_1200 = Time.new(2015,  7, 15, 12)
+  JULY_15_2015_1215 = Time.new(2015,  7, 15, 12, 15)
   JULY_15_2015_1300 = Time.new(2015,  7, 15, 13)
+  JULY_15_2015_1315 = Time.new(2015,  7, 15, 13, 15)
 
   MAY_15_2016_1200  = Time.new(2016,  5, 15, 12)
   MAY_15_2016_1300  = Time.new(2016,  5, 15, 13)
@@ -51,13 +55,17 @@ describe Avocado::EventBuilder do
     ['call mum at 7am',                            'call mum',       MONDAY_1_0700,   MONDAY_1_0700],
     ['call mum at 7',                              'call mum',       MONDAY_1_0700,   MONDAY_1_0700],
     ['call mum at 18',                             'call mum',       MONDAY_1_1800,   MONDAY_1_1800],
+    ['turn off stove at 18:10',                    'turn off stove', SUNDAY_1_1810,   SUNDAY_1_1810],
+    ['turn off stove at 6:10pm',                   'turn off stove', SUNDAY_1_1810,   SUNDAY_1_1810],
     ['go to gym at 7pm for 1 hour',                'go to gym',      SUNDAY_1_1900,   SUNDAY_1_2000],
     ['call mum at 7pm on Thursday',                'call mum',       THURSDAY_1_1900, THURSDAY_1_1900],
     ['call mum at 7pm on Sunday',                  'call mum',       SUNDAY_2_1900, SUNDAY_2_1900],
     ['go swimming at 12pm on Thursday for 1 hour', 'go swimming',    THURSDAY_1_1200, THURSDAY_1_1300],
     ['go to gym at 12pm on Thursday for 3 hours',  'go to gym',      THURSDAY_1_1200, THURSDAY_1_1500],
     ['go swimming at 12pm for 1 hour on Thursday', 'go swimming',    THURSDAY_1_1200, THURSDAY_1_1300],
+    ['go swimming at 12:10pm for 1 hour on Thursday', 'go swimming',    THURSDAY_1_1210, THURSDAY_1_1310],
     ['go swimming at 12pm for 1 hour on 15th July', 'go swimming',   JULY_15_2015_1200, JULY_15_2015_1300],
+    ['go swimming at 12:15pm for 1 hour on 15th July', 'go swimming',   JULY_15_2015_1215, JULY_15_2015_1315],
     ['go swimming at 12pm for 1 hour on 15th May', 'go swimming',    MAY_15_2016_1200, MAY_15_2016_1300],
   ].each do |args|
     description, title, start_time, end_time = *args
