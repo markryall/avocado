@@ -32,7 +32,8 @@ class Avocado::Commands::Events
     builder = Avocado::EventBuilder.new
     event = builder.build args.join(' ')
     if event
-      response = api.events.create event.params
+      created_event = Avocado::Event.parse api.events.create event.params
+      puts "Created new event: #{event.start_time.strftime('%a %I:%M%P')} #{event.title}"
     else
       builder.usage
     end
