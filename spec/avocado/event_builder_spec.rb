@@ -37,9 +37,11 @@ describe Avocado::EventBuilder do
     ['call mum at 19',                             'call mum', SUNDAY_7PM, SUNDAY_7PM],
     ['call mum at 7pm',                            'call mum', SUNDAY_7PM, SUNDAY_7PM],
     ['call mum at 7',                              'call mum', SUNDAY_7PM, SUNDAY_7PM],
-    # ['go to gym for 1 hour at 7pm',                'go to gym', nil, nil],
-    # ['go swimming for 1 hour on Thursday at 12pm', 'go swimming', nil, nil],
-    # ['go to gym for 3 hours on Thursday at 12pm',  'go to gym', nil, nil]
+    ['go to gym at 7pm for 1 hour',                'go to gym', nil, nil],
+    ['call mum at 7pm on Thursday',                'call mum', nil, nil],
+    ['go swimming at 12pm on Thursday for 1 hour', 'go swimming', nil, nil],
+    ['go to gym at 12pm on Thursday for 3 hours',  'go to gym', nil, nil],
+    ['go swimming at 12pm for 1 hour on Thursday', 'go swimming', nil, nil],
   ].each do |args|
     description, title, start_time, end_time = *args
     it description do
