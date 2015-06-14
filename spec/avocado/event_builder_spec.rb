@@ -22,25 +22,25 @@ end
 Fixnum.include Times
 
 describe Avocado::EventBuilder do
-  SUNDAY_6PM     = Time.new(2015,  6,  7, 18)
-  SUNDAY_6_05_PM = Time.new(2015,  6,  7, 18,  5)
-  SUNDAY_7PM     = Time.new(2015,  6,  7, 19)
-  SUNDAY_8PM     = Time.new(2015,  6,  7, 20)
-  MONDAY_7AM     = Time.new(2015,  6,  8,  7)
-  THURSDAY_12PM  = Time.new(2015,  6, 11, 12)
-  THURSDAY_1PM   = Time.new(2015,  6, 11, 13)
-  THURSDAY_3PM   = Time.new(2015,  6, 11, 15)
+  SUNDAY_1805 = Time.new(2015,  6,  7, 18,  5)
+  SUNDAY_1810 = Time.new(2015,  6,  7, 18, 10)
+  SUNDAY_1900 = Time.new(2015,  6,  7, 19)
+  SUNDAY_1905 = Time.new(2015,  6,  7, 19,  5)
+  SUNDAY_2000 = Time.new(2015,  6,  7, 20)
+  MONDAY_0700 = Time.new(2015,  6,  8,  7)
+  MONDAY_1800 = Time.new(2015,  6,  8,  18)
 
-  let(:builder) { Avocado::EventBuilder.new SUNDAY_6PM }
+  let(:builder) { Avocado::EventBuilder.new SUNDAY_1805 }
 
   [
-    ['turn off stove in 5 minutes',                'turn off stove', SUNDAY_6_05_PM, SUNDAY_6_05_PM],
-    ['call mum in 1 hour',                         'call mum', SUNDAY_7PM, SUNDAY_7PM],
-    ['call mum at 19',                             'call mum', SUNDAY_7PM, SUNDAY_7PM],
-    ['call mum at 7pm',                            'call mum', SUNDAY_7PM, SUNDAY_7PM],
-    ['call mum at 7am',                            'call mum', MONDAY_7AM, MONDAY_7AM],
-    ['call mum at 7',                              'call mum', MONDAY_7AM, MONDAY_7AM],
-    ['go to gym at 7pm for 1 hour',                'go to gym', SUNDAY_7PM, SUNDAY_8PM],
+    ['turn off stove in 5 minutes',                'turn off stove', SUNDAY_1810, SUNDAY_1810],
+    ['call mum in 1 hour',                         'call mum',       SUNDAY_1905, SUNDAY_1905],
+    ['call mum at 19',                             'call mum',       SUNDAY_1900, SUNDAY_1900],
+    ['call mum at 7pm',                            'call mum',       SUNDAY_1900, SUNDAY_1900],
+    ['call mum at 7am',                            'call mum',       MONDAY_0700, MONDAY_0700],
+    ['call mum at 7',                              'call mum',       MONDAY_0700, MONDAY_0700],
+    ['call mum at 18',                             'call mum',       MONDAY_1800, MONDAY_1800],
+    ['go to gym at 7pm for 1 hour',                'go to gym',      SUNDAY_1900, SUNDAY_2000],
     ['call mum at 7pm on Thursday',                'call mum', nil, nil],
     ['go swimming at 12pm on Thursday for 1 hour', 'go swimming', nil, nil],
     ['go to gym at 12pm on Thursday for 3 hours',  'go to gym', nil, nil],
