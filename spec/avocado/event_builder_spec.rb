@@ -22,13 +22,14 @@ end
 Fixnum.include Times
 
 describe Avocado::EventBuilder do
-  SUNDAY_6PM     = Time.new(2015, 06, 07, 18)
-  SUNDAY_6_05_PM = Time.new(2015, 06, 07, 18, 5)
-  SUNDAY_7PM     = Time.new(2015, 06, 07, 19)
-  SUNDAY_8PM     = Time.new(2015, 06, 07, 20)
-  THURSDAY_12PM  = Time.new(2015, 06, 11, 12)
-  THURSDAY_1PM   = Time.new(2015, 06, 11, 13)
-  THURSDAY_3PM   = Time.new(2015, 06, 11, 15)
+  SUNDAY_6PM     = Time.new(2015,  6,  7, 18)
+  SUNDAY_6_05_PM = Time.new(2015,  6,  7, 18,  5)
+  SUNDAY_7PM     = Time.new(2015,  6,  7, 19)
+  SUNDAY_8PM     = Time.new(2015,  6,  7, 20)
+  MONDAY_7AM     = Time.new(2015,  6,  8,  7)
+  THURSDAY_12PM  = Time.new(2015,  6, 11, 12)
+  THURSDAY_1PM   = Time.new(2015,  6, 11, 13)
+  THURSDAY_3PM   = Time.new(2015,  6, 11, 15)
 
   let(:builder) { Avocado::EventBuilder.new SUNDAY_6PM }
 
@@ -37,7 +38,8 @@ describe Avocado::EventBuilder do
     ['call mum in 1 hour',                         'call mum', SUNDAY_7PM, SUNDAY_7PM],
     ['call mum at 19',                             'call mum', SUNDAY_7PM, SUNDAY_7PM],
     ['call mum at 7pm',                            'call mum', SUNDAY_7PM, SUNDAY_7PM],
-    ['call mum at 7',                              'call mum', SUNDAY_7PM, SUNDAY_7PM],
+    ['call mum at 7am',                            'call mum', MONDAY_7AM, MONDAY_7AM],
+    ['call mum at 7',                              'call mum', MONDAY_7AM, MONDAY_7AM],
     ['go to gym at 7pm for 1 hour',                'go to gym', SUNDAY_7PM, SUNDAY_8PM],
     ['call mum at 7pm on Thursday',                'call mum', nil, nil],
     ['go swimming at 12pm on Thursday for 1 hour', 'go swimming', nil, nil],
