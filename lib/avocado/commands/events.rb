@@ -17,7 +17,6 @@ class Avocado::Commands::Events
       list
     when 'create'
       create
-      list
     end
   end
 
@@ -36,6 +35,7 @@ class Avocado::Commands::Events
       create_reminder created_event, me
       create_reminder created_event, you
       puts "Created new event: #{event.start_time.strftime('%a %I:%M%P')} #{event.title}"
+      list
     else
       builder.usage
     end
