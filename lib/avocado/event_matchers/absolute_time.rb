@@ -15,9 +15,9 @@ class Avocado::EventMatchers::AbsoluteTime
 
   def event now
     _, title, hour, ap = *@match
-    time = time_on_day now, hour.to_i, ap
     duration = extract_duration
-    # day_of_week = extract_day_of_week now
+    day_offset = extract_day_offset now
+    time = time_on_day now, day_offset, hour.to_i, ap
     Avocado::Event.new.tap do |event|
       event.title = title
       event.start_time = time
@@ -34,14 +34,22 @@ class Avocado::EventMatchers::AbsoluteTime
     quantity * unit
   end
 
-  def extract_day_of_week now
+  def extract_day_offset now
     match = DAY_REGEXP.match @match.post_match
-    now.wday
+    return nil unless match
+    day = SHORT_DAYNAMES.index match[1].downcase.slice 0..1
+    offset = day - now.wday
+    if offset > 0
+      offset
+    else
+      7 + offset
+    end
   end
 
-  def time_on_day now, hour, ap
-    hour += 12 if ap && ap.start_with?('p')
+  def time_on_day now, day_offset, hour, ap
+    hour += 12 if hour < 12 && ap && ap.start_with?('p')
     time = Time.new(now.year, now.month, now.day, hour)
+    time += day_offset * DAY if day_offset
     time < now ? (time+DAY) : time
   end
 end
