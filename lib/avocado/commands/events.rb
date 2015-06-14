@@ -3,6 +3,7 @@ require 'avocado/event'
 require 'avocado/event_builder'
 
 class Avocado::Commands::Events
+  include Avocado::Users
   attr_reader :api, :config, :args
 
   def initialize api, config, args
@@ -23,7 +24,7 @@ class Avocado::Commands::Events
   def list
     api.events.all.each_with_index do |attributes, index|
       event = Avocado::Event.parse attributes
-      puts "#{event.start_time.strftime('%a %I:%M%P')} #{event.title}"
+      puts "#{event.start_time.strftime('%a %I:%M%P')} #{event.title} (by #{users_hash[event.user_id]})"
     end
   end
 
