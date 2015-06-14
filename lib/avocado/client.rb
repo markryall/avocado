@@ -70,7 +70,17 @@ class Avocado::Client
   end
 
   def to_query_string hash
-    hash.map{|k,v| "#{CGI.escape k.to_s}=#{CGI.escape v.to_s}"}.join('&')
+    [].tap do |list|
+      hash.each do |k,v|
+        if v.kind_of? Array
+          v.each do |e|
+            list << "#{CGI.escape k.to_s}=#{CGI.escape e.to_s}"
+          end
+        else
+         list << "#{CGI.escape k.to_s}=#{CGI.escape v.to_s}"
+        end
+      end
+    end.join('&')
   end
 
   def get_cookie_from_login

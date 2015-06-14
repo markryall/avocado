@@ -32,10 +32,18 @@ class Avocado::Commands::Events
     builder = Avocado::EventBuilder.new
     event = builder.build args.join(' ')
     if event
-      created_event = Avocado::Event.parse api.events.create event.params
+      created_event = Avocado::Event.parse api.events.create event.params.merge(attending: users.map{|u| u['id']})
+      create_reminder created_event, me
+      create_reminder created_event, you
       puts "Created new event: #{event.start_time.strftime('%a %I:%M%P')} #{event.title}"
     else
       builder.usage
     end
+  end
+
+  private
+
+  def create_reminder event, user
+    api.events.create_notification event, interval: 0, user_id: user['id'], type: 'push'
   end
 end

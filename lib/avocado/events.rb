@@ -14,4 +14,12 @@ class Avocado::Events
   def create params
     client.post '/api/calendar', params
   end
+
+  def edit event, params
+    client.post "/api/calendar/#{event.id}", params
+  end
+
+  def create_notification event, params
+    client.post "/api/calendar/#{event.id}/reminders", params
+  end
 end
