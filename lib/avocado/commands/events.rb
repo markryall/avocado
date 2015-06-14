@@ -1,4 +1,5 @@
 require 'avocado/commands'
+require 'avocado/event'
 require 'avocado/event_builder'
 
 class Avocado::Commands::Events
@@ -20,8 +21,9 @@ class Avocado::Commands::Events
   end
 
   def list
-    api.events.all.each_with_index do |event, index|
-      puts "#{event}"
+    api.events.all.each_with_index do |attributes, index|
+      event = Avocado::Event.parse attributes
+      puts "#{event.start_time.strftime('%a %I:%M%P')} #{event.title}"
     end
   end
 

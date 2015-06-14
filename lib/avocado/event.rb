@@ -1,6 +1,17 @@
 class Avocado::Event
   attr_accessor :start_time, :end_time, :all_day, :repeat
   attr_accessor :title, :location, :description, :timezone
+  attr_accessor :id, :user_id
+
+  def self.parse(hash)
+    new.tap do |event|
+      event.id = hash['id']
+      event.user_id = hash['userId']
+      event.start_time = Time.at hash['startTime'] / 1000
+      event.end_time = Time.at hash['endTime'] / 1000
+      event.title = hash['title']
+    end
+  end
 
   def params
     {}.tap do |hash|
