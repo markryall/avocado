@@ -7,15 +7,22 @@ class Avocado::EventBuilder
   end
 
   def usage
-    puts "The event was not recognised.  Current patterns are:"
-    puts "  Call Mum in 15 minutes"
-    puts "  Turn off oven in 2 hours"
-    puts "  Medical appointment at 7"
+    puts <<EOF
+That event was not recognised.
+Here are examples of recognisable patterns:
+  Call Mum in 15 minutes
+  Turn off oven in 2 hours
+  Attend medical appointment at 7
+  Go to gym at 6pm for 2 hours
+  Go white water rafting at 8am on Saturday for 6 hours
+  Fly to Paris at 7am on 17th August
+EOF
   end
 
   def build(text)
     @matchers.each do |matcher|
       return matcher.event @now if matcher.matches? text
     end
+    nil
   end
 end
