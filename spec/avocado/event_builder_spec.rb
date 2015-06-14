@@ -35,6 +35,12 @@ describe Avocado::EventBuilder do
   THURSDAY_1_1900 = Time.new(2015,  6, 11, 19)
   SUNDAY_2_1900   = Time.new(2015,  6, 14, 19)
 
+  JULY_15_2015_1200 = Time.new(2015,  7, 15, 12)
+  JULY_15_2015_1300 = Time.new(2015,  7, 15, 13)
+
+  MAY_15_2016_1200  = Time.new(2016,  5, 15, 12)
+  MAY_15_2016_1300  = Time.new(2016,  5, 15, 13)
+
   let(:builder) { Avocado::EventBuilder.new SUNDAY_1_1805 }
 
   [
@@ -51,6 +57,8 @@ describe Avocado::EventBuilder do
     ['go swimming at 12pm on Thursday for 1 hour', 'go swimming',    THURSDAY_1_1200, THURSDAY_1_1300],
     ['go to gym at 12pm on Thursday for 3 hours',  'go to gym',      THURSDAY_1_1200, THURSDAY_1_1500],
     ['go swimming at 12pm for 1 hour on Thursday', 'go swimming',    THURSDAY_1_1200, THURSDAY_1_1300],
+    ['go swimming at 12pm for 1 hour on 15th July', 'go swimming',   JULY_15_2015_1200, JULY_15_2015_1300],
+    ['go swimming at 12pm for 1 hour on 15th May', 'go swimming',    MAY_15_2016_1200, MAY_15_2016_1300],
   ].each do |args|
     description, title, start_time, end_time = *args
     it description do
