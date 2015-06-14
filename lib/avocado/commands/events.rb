@@ -28,12 +28,14 @@ class Avocado::Commands::Events
   end
 
   def create
+    target_users = args.shift == 'us' ? users : [me]
     builder = Avocado::EventBuilder.new
     event = builder.build args.join(' ')
     if event
-      created_event = Avocado::Event.parse api.events.create event.params.merge(attending: users.map{|u| u['id']})
-      create_reminder created_event, me
-      create_reminder created_event, you
+      created_event = Avocado::Event.parse api.events.create event.params.merge(attending: target_users.map{|u| u['id']})
+      target_users.each do |user|
+        create_reminder created_event, user
+      end
       puts "Created new event: #{event.start_time.strftime('%a %I:%M%P')} #{event.title}"
       list
     else

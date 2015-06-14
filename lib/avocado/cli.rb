@@ -38,6 +38,8 @@ module Avocado
         puts 'avocado lists items uncomplete <index> - complete item at index <index> in selected list'
         puts 'avocado lists items delete <index>     - delete item at index <index> in selected list'
         puts 'avocado events                         - show events'
+        puts 'avocado events create me               - create event including only yourself'
+        puts 'avocado events create us               - create event including yourself and your partner'
       end
     end
 
