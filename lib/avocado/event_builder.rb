@@ -2,8 +2,6 @@ require 'avocado/event'
 require 'avocado/event_matchers'
 
 class Avocado::EventBuilder
-  SHORT_DAYNAMES = %w{su mo tu we th fr sa}
-
   def initialize now=Time.now
     @now, @matchers = now, Avocado::EventMatchers.matchers
   end
