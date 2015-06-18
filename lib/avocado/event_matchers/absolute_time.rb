@@ -5,11 +5,19 @@ class Avocado::EventMatchers::AbsoluteTime
   REGEXP = /^(.+) at (\d+)(:\d\d)?([ap])?m?/
   DAY_REGEXP = /on (\w+)/
   SPECIFIC_DATE_REGEXP = /on (\d+)\w+ (\w+)/
-  DURATION_REGEXP = /for (\d+) ([m|h])s?/
+  DURATION_REGEXP = /for (\d+) ([d|h|m|s])s?/
 
+  SECOND = 1
   MINUTE = 60
   HOUR = MINUTE * 60
   DAY = HOUR * 24
+
+  DURATIONS = {
+    s: SECOND,
+    m: MINUTE,
+    h: HOUR,
+    d: DAY
+  }
 
   def matches? text
     @match = REGEXP.match text
@@ -41,9 +49,7 @@ class Avocado::EventMatchers::AbsoluteTime
     match = DURATION_REGEXP.match @match.post_match
     return 0 unless match
     _, quantity, unit = *match
-    quantity = quantity.to_i
-    unit = unit == 'm' ? 60 : 60*60
-    quantity * unit
+    quantity.to_i * DURATIONS[unit.to_sym]
   end
 
   def extract_specific_time now, hour, minute
